@@ -1,8 +1,8 @@
 import ApplicationContext, { View } from "ioc4ts";
 import User from "../model/User";
 
-@View("app")
-class HomeView {
+@View("title")
+class HomeTitle {
     async render() {
         const application = ApplicationContext.getInstance()
         const beanFactory = application.getBeanFactory()
@@ -14,4 +14,4 @@ class HomeView {
     }
 }
 
-export default HomeView
+export default HomeTitle

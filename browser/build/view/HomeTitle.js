@@ -24,41 +24,29 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const src_1 = __importStar(require("../src"));
-const View_1 = __importDefault(require("../src/view/annotations/View"));
-const WebApplication_1 = __importDefault(require("../src/view/WebApplication"));
-src_1.default.getInstance({ log: true });
-class User {
-}
-__decorate([
-    (0, src_1.Property)('username'),
-    __metadata("design:type", String)
-], User.prototype, "name", void 0);
-class UserMapper {
-    static getUser(id) { }
-}
-__decorate([
-    (0, src_1.Get)('/{id}'),
-    (0, src_1.ReturnType)('User'),
-    __param(0, (0, src_1.PathVariable)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
-], UserMapper, "getUser", null);
-let AView = class AView {
+const ioc4ts_1 = __importStar(require("ioc4ts"));
+let HomeTitle = class HomeTitle {
+    render() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const application = ioc4ts_1.default.getInstance();
+            const beanFactory = application.getBeanFactory();
+            const UserMapper = beanFactory.getBeanClass("UserMapper");
+            const user = yield UserMapper.getUser();
+            return `<h1>${user.hello()}</h1>`;
+        });
+    }
 };
-AView = __decorate([
-    (0, View_1.default)("id")
-], AView);
-new WebApplication_1.default().run();
-// ApplicationContext.getInstance().getBeanFactory().check()
+HomeTitle = __decorate([
+    (0, ioc4ts_1.View)("title")
+], HomeTitle);
+exports.default = HomeTitle;

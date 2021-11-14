@@ -1,15 +1,19 @@
-import ApplicationContext from "ioc4ts";
+import ApplicationContext, { WebApplication } from "ioc4ts";
 
 ApplicationContext.getInstance({ log: true })
 
 import AxiosHttpRequest from "./config/AxiosHttpRequest";
 import User from "./model/User";
 import UserMapper from "./mapper/UserMapper"
-import HomeView from "./view/HomeView";
+import HomeTitle from "./view/HomeTitle";
+import HomeContent from "./view/HomeContent"
 
 export default {
     AxiosHttpRequest,
     User,
     UserMapper,
-    HomeView
+    HomeTitle,
+    HomeContent
 }
+
+new WebApplication().run()

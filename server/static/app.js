@@ -217,26 +217,48 @@ AxiosHttpRequest = __decorate([
 ], AxiosHttpRequest);
 exports.default = AxiosHttpRequest;
 
-},{"axios":7,"ioc4ts":45}],3:[function(require,module,exports){
+},{"axios":8,"ioc4ts":47}],3:[function(require,module,exports){
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ioc4ts_1 = __importDefault(require("ioc4ts"));
+const ioc4ts_1 = __importStar(require("ioc4ts"));
 ioc4ts_1.default.getInstance({ log: true });
 const AxiosHttpRequest_1 = __importDefault(require("./config/AxiosHttpRequest"));
 const User_1 = __importDefault(require("./model/User"));
 const UserMapper_1 = __importDefault(require("./mapper/UserMapper"));
-const HomeView_1 = __importDefault(require("./view/HomeView"));
+const HomeTitle_1 = __importDefault(require("./view/HomeTitle"));
+const HomeContent_1 = __importDefault(require("./view/HomeContent"));
 exports.default = {
     AxiosHttpRequest: AxiosHttpRequest_1.default,
     User: User_1.default,
     UserMapper: UserMapper_1.default,
-    HomeView: HomeView_1.default
+    HomeTitle: HomeTitle_1.default,
+    HomeContent: HomeContent_1.default
 };
+new ioc4ts_1.WebApplication().run();
 
-},{"./config/AxiosHttpRequest":2,"./mapper/UserMapper":4,"./model/User":5,"./view/HomeView":6,"ioc4ts":45}],4:[function(require,module,exports){
+},{"./config/AxiosHttpRequest":2,"./mapper/UserMapper":4,"./model/User":5,"./view/HomeContent":6,"./view/HomeTitle":7,"ioc4ts":47}],4:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -259,7 +281,7 @@ __decorate([
 ], UserMapper, "getUser", null);
 exports.default = UserMapper;
 
-},{"../model/User":5,"ioc4ts":45}],5:[function(require,module,exports){
+},{"../model/User":5,"ioc4ts":47}],5:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -279,7 +301,27 @@ __decorate([
 ], User.prototype, "name", void 0);
 exports.default = User;
 
-},{"ioc4ts":45}],6:[function(require,module,exports){
+},{"ioc4ts":47}],6:[function(require,module,exports){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const ioc4ts_1 = require("ioc4ts");
+let HomeContent = class HomeContent {
+    render() {
+        return `<p>ioc4ts 是一个前端 MVC 框架，正在努力开发中！</p>`;
+    }
+};
+HomeContent = __decorate([
+    (0, ioc4ts_1.View)("content")
+], HomeContent);
+exports.default = HomeContent;
+
+},{"ioc4ts":47}],7:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -317,7 +359,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ioc4ts_1 = __importStar(require("ioc4ts"));
-let HomeView = class HomeView {
+let HomeTitle = class HomeTitle {
     render() {
         return __awaiter(this, void 0, void 0, function* () {
             const application = ioc4ts_1.default.getInstance();
@@ -328,14 +370,14 @@ let HomeView = class HomeView {
         });
     }
 };
-HomeView = __decorate([
-    (0, ioc4ts_1.View)("app")
-], HomeView);
-exports.default = HomeView;
+HomeTitle = __decorate([
+    (0, ioc4ts_1.View)("title")
+], HomeTitle);
+exports.default = HomeTitle;
 
-},{"ioc4ts":45}],7:[function(require,module,exports){
+},{"ioc4ts":47}],8:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":9}],8:[function(require,module,exports){
+},{"./lib/axios":10}],9:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -549,7 +591,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../cancel/Cancel":10,"../core/buildFullPath":15,"../core/createError":16,"../defaults":22,"./../core/settle":20,"./../helpers/buildURL":25,"./../helpers/cookies":27,"./../helpers/isURLSameOrigin":30,"./../helpers/parseHeaders":32,"./../utils":35}],9:[function(require,module,exports){
+},{"../cancel/Cancel":11,"../core/buildFullPath":16,"../core/createError":17,"../defaults":23,"./../core/settle":21,"./../helpers/buildURL":26,"./../helpers/cookies":28,"./../helpers/isURLSameOrigin":31,"./../helpers/parseHeaders":33,"./../utils":36}],10:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -608,7 +650,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":10,"./cancel/CancelToken":11,"./cancel/isCancel":12,"./core/Axios":13,"./core/mergeConfig":19,"./defaults":22,"./env/data":23,"./helpers/bind":24,"./helpers/isAxiosError":29,"./helpers/spread":33,"./utils":35}],10:[function(require,module,exports){
+},{"./cancel/Cancel":11,"./cancel/CancelToken":12,"./cancel/isCancel":13,"./core/Axios":14,"./core/mergeConfig":20,"./defaults":23,"./env/data":24,"./helpers/bind":25,"./helpers/isAxiosError":30,"./helpers/spread":34,"./utils":36}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -629,7 +671,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -750,14 +792,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":10}],12:[function(require,module,exports){
+},{"./Cancel":11}],13:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -907,7 +949,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":25,"../helpers/validator":34,"./../utils":35,"./InterceptorManager":14,"./dispatchRequest":17,"./mergeConfig":19}],14:[function(require,module,exports){
+},{"../helpers/buildURL":26,"../helpers/validator":35,"./../utils":36,"./InterceptorManager":15,"./dispatchRequest":18,"./mergeConfig":20}],15:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -963,7 +1005,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":35}],15:[function(require,module,exports){
+},{"./../utils":36}],16:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -985,7 +1027,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":26,"../helpers/isAbsoluteURL":28}],16:[function(require,module,exports){
+},{"../helpers/combineURLs":27,"../helpers/isAbsoluteURL":29}],17:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -1005,7 +1047,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":18}],17:[function(require,module,exports){
+},{"./enhanceError":19}],18:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1094,7 +1136,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/Cancel":10,"../cancel/isCancel":12,"../defaults":22,"./../utils":35,"./transformData":21}],18:[function(require,module,exports){
+},{"../cancel/Cancel":11,"../cancel/isCancel":13,"../defaults":23,"./../utils":36,"./transformData":22}],19:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1139,7 +1181,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -1240,7 +1282,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":35}],20:[function(require,module,exports){
+},{"../utils":36}],21:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -1267,7 +1309,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":16}],21:[function(require,module,exports){
+},{"./createError":17}],22:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1291,7 +1333,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":22,"./../utils":35}],22:[function(require,module,exports){
+},{"./../defaults":23,"./../utils":36}],23:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -1429,11 +1471,11 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":8,"./adapters/xhr":8,"./core/enhanceError":18,"./helpers/normalizeHeaderName":31,"./utils":35,"_process":1}],23:[function(require,module,exports){
+},{"./adapters/http":9,"./adapters/xhr":9,"./core/enhanceError":19,"./helpers/normalizeHeaderName":32,"./utils":36,"_process":1}],24:[function(require,module,exports){
 module.exports = {
   "version": "0.24.0"
 };
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -1446,7 +1488,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1518,7 +1560,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":35}],26:[function(require,module,exports){
+},{"./../utils":36}],27:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1534,7 +1576,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1589,7 +1631,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":35}],28:[function(require,module,exports){
+},{"./../utils":36}],29:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1605,7 +1647,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1618,7 +1660,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1688,7 +1730,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":35}],31:[function(require,module,exports){
+},{"./../utils":36}],32:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -1702,7 +1744,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":35}],32:[function(require,module,exports){
+},{"../utils":36}],33:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1757,7 +1799,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":35}],33:[function(require,module,exports){
+},{"./../utils":36}],34:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1786,7 +1828,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 var VERSION = require('../env/data').version;
@@ -1870,7 +1912,7 @@ module.exports = {
   validators: validators
 };
 
-},{"../env/data":23}],35:[function(require,module,exports){
+},{"../env/data":24}],36:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -2221,7 +2263,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":24}],36:[function(require,module,exports){
+},{"./helpers/bind":25}],37:[function(require,module,exports){
 "use strict";
 /**
  * ApplicationContext 类
@@ -2236,12 +2278,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const BeanFactory_1 = __importDefault(require("./BeanFactory"));
+const ViewBeanRegistry_1 = __importDefault(require("./ViewBeanRegistry"));
 class ApplicationContext {
     constructor(config) {
         var _a;
         this.log = (_a = config === null || config === void 0 ? void 0 : config.log) !== null && _a !== void 0 ? _a : false;
         this.beanFactory = new BeanFactory_1.default();
-        this.beanFactory.setLog(this.log);
+        this.viewBeanRegistry = new ViewBeanRegistry_1.default();
     }
     static getInstance(config) {
         if (!this.instance) {
@@ -2252,10 +2295,16 @@ class ApplicationContext {
     getBeanFactory() {
         return this.beanFactory;
     }
+    getViewBeanRegisty() {
+        return this.viewBeanRegistry;
+    }
+    isLog() {
+        return this.log;
+    }
 }
 exports.default = ApplicationContext;
 
-},{"./BeanFactory":38}],37:[function(require,module,exports){
+},{"./BeanFactory":39,"./ViewBeanRegistry":43}],38:[function(require,module,exports){
 "use strict";
 /**
  * BeanDefinition 类
@@ -2315,7 +2364,7 @@ class BeanDefinition {
 }
 exports.default = BeanDefinition;
 
-},{"./utils/Log":44}],38:[function(require,module,exports){
+},{"./utils/Log":46}],39:[function(require,module,exports){
 "use strict";
 /**
  * BeanFactory 类
@@ -2335,7 +2384,6 @@ class BeanFactory extends DefaultSingletonBeanRegistry_1.default {
     constructor() {
         super();
         this.beanDefinitionMap = new Map();
-        this.log = false;
     }
     loadBeanDefinition(ctor) {
         if (this.beanDefinitionMap.get(ctor.name)) {
@@ -2373,12 +2421,6 @@ class BeanFactory extends DefaultSingletonBeanRegistry_1.default {
         });
         return bean;
     }
-    setLog(log) {
-        this.log = log;
-    }
-    isLog() {
-        return this.log;
-    }
     check() {
         console.log('---------- BeanFactory Check ----------');
         for (const item of this.beanDefinitionMap) {
@@ -2394,7 +2436,7 @@ class BeanFactory extends DefaultSingletonBeanRegistry_1.default {
 }
 exports.default = BeanFactory;
 
-},{"./BeanDefinition":37,"./DefaultSingletonBeanRegistry":39}],39:[function(require,module,exports){
+},{"./BeanDefinition":38,"./DefaultSingletonBeanRegistry":40}],40:[function(require,module,exports){
 "use strict";
 /**
  * DefaultSingletonBeanRegistry 类
@@ -2419,7 +2461,7 @@ class DefaultSingletonBeanRegistry {
         }
         this.singletonObjects.set(name, singletonObject);
         if (Log_1.default.isLog()) {
-            Log_1.default.info('Method', `Register singleton "${name}".`);
+            Log_1.default.info('Bean', `Register singleton "${name}".`);
         }
     }
     getSingleton(name) {
@@ -2428,7 +2470,7 @@ class DefaultSingletonBeanRegistry {
 }
 exports.default = DefaultSingletonBeanRegistry;
 
-},{"./utils/Log":44}],40:[function(require,module,exports){
+},{"./utils/Log":46}],41:[function(require,module,exports){
 "use strict";
 /**
  * MethodDefinition 类
@@ -2515,7 +2557,7 @@ class MethodDefinition {
 }
 exports.default = MethodDefinition;
 
-},{"./utils/Log":44}],41:[function(require,module,exports){
+},{"./utils/Log":46}],42:[function(require,module,exports){
 "use strict";
 /**
  * ParameterGenerator 类
@@ -2550,7 +2592,80 @@ class ParameterGenerator {
 }
 exports.default = ParameterGenerator;
 
-},{"./ApplicationContext":36,"./MethodDefinition":40}],42:[function(require,module,exports){
+},{"./ApplicationContext":37,"./MethodDefinition":41}],43:[function(require,module,exports){
+"use strict";
+/**
+ * ViewBeanRegistry 类
+ *
+ * @author zhangbaili
+ * @since 1.2.2-beta
+*/
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const BeanFactory_1 = __importDefault(require("./BeanFactory"));
+const Log_1 = __importDefault(require("./utils/Log"));
+class ViewBeanRegistry extends BeanFactory_1.default {
+    constructor() {
+        super();
+        this.viewBeanDefinitions = new Map();
+    }
+    registerView(id, ctor) {
+        if (this.viewBeanDefinitions.has(id)) {
+            throw new Error(`Error: View with id "${id} has exist !"`);
+        }
+        const beanDefinition = this.loadBeanDefinition(ctor);
+        this.viewBeanDefinitions.set(id, beanDefinition);
+        if (Log_1.default.isLog()) {
+            Log_1.default.info("View", `Register view with id "${id}".`);
+        }
+    }
+    getView(id) {
+        const beanDefinition = this.viewBeanDefinitions.get(id);
+        if (!beanDefinition) {
+            throw new Error(`Error: View with id "${id}" is not found !`);
+        }
+        return beanDefinition;
+    }
+    mountAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const view of this.viewBeanDefinitions) {
+                const id = view[0];
+                const ctor = view[1].getCtor();
+                if (document) {
+                    const element = document.getElementById(id);
+                    if (!element) {
+                        throw new Error(`Error: Element with id '${id}' is not found !`);
+                    }
+                    const viewInstance = new ctor();
+                    if (!viewInstance.render || !(viewInstance.render instanceof Function)) {
+                        throw new Error(`Error: View instance with id "${id}" has no method named "render".`);
+                    }
+                    const html = viewInstance.render();
+                    if (html instanceof Promise) {
+                        element.innerHTML = yield html;
+                    }
+                    else {
+                        element.innerHTML = html;
+                    }
+                }
+            }
+        });
+    }
+}
+exports.default = ViewBeanRegistry;
+
+},{"./BeanFactory":39,"./utils/Log":46}],44:[function(require,module,exports){
 "use strict";
 /**
  * Property 注解
@@ -2580,7 +2695,7 @@ function Property(name) {
 }
 exports.default = Property;
 
-},{"../ApplicationContext":36}],43:[function(require,module,exports){
+},{"../ApplicationContext":37}],45:[function(require,module,exports){
 "use strict";
 /**
  * ReturnType 注解
@@ -2621,7 +2736,7 @@ function ReturnType(type) {
 }
 exports.default = ReturnType;
 
-},{"../ApplicationContext":36,"../MethodDefinition":40}],44:[function(require,module,exports){
+},{"../ApplicationContext":37,"../MethodDefinition":41}],46:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -2630,7 +2745,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ApplicationContext_1 = __importDefault(require("../ApplicationContext"));
 class Log {
     static isLog() {
-        return ApplicationContext_1.default.getInstance().getBeanFactory().isLog();
+        return ApplicationContext_1.default.getInstance().isLog();
     }
     static info(type, message) {
         const reg = /\d\d:\d\d:\d\d/g;
@@ -2640,7 +2755,7 @@ class Log {
 }
 exports.default = Log;
 
-},{"../ApplicationContext":36}],45:[function(require,module,exports){
+},{"../ApplicationContext":37}],47:[function(require,module,exports){
 "use strict";
 /**
  * ioc4ts
@@ -2654,7 +2769,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.View = exports.HttpRequest = exports.RequestBody = exports.RequestHeader = exports.RequestParam = exports.Delete = exports.Put = exports.Post = exports.PathVariable = exports.Property = exports.ReturnType = exports.Get = void 0;
+exports.WebApplication = exports.View = exports.HttpRequest = exports.RequestBody = exports.RequestHeader = exports.RequestParam = exports.Delete = exports.Put = exports.Post = exports.PathVariable = exports.Property = exports.ReturnType = exports.Get = void 0;
 const Get_1 = __importDefault(require("./web/annotations/Get"));
 exports.Get = Get_1.default;
 const ReturnType_1 = __importDefault(require("./core/annotations/ReturnType"));
@@ -2680,9 +2795,31 @@ const HttpRequest_1 = __importDefault(require("./web/annotations/HttpRequest"));
 exports.HttpRequest = HttpRequest_1.default;
 const View_1 = __importDefault(require("./view/annotations/View"));
 exports.View = View_1.default;
+const WebApplication_1 = __importDefault(require("./view/WebApplication"));
+exports.WebApplication = WebApplication_1.default;
 exports.default = ApplicationContext_1.default;
 
-},{"./core/ApplicationContext":36,"./core/annotations/Property":42,"./core/annotations/ReturnType":43,"./view/annotations/View":46,"./web/annotations/Delete":50,"./web/annotations/Get":51,"./web/annotations/HttpRequest":52,"./web/annotations/PathVariable":53,"./web/annotations/Post":54,"./web/annotations/Put":55,"./web/annotations/RequestBody":56,"./web/annotations/RequestHeader":57,"./web/annotations/RequestParam":58}],46:[function(require,module,exports){
+},{"./core/ApplicationContext":37,"./core/annotations/Property":44,"./core/annotations/ReturnType":45,"./view/WebApplication":48,"./view/annotations/View":49,"./web/annotations/Delete":53,"./web/annotations/Get":54,"./web/annotations/HttpRequest":55,"./web/annotations/PathVariable":56,"./web/annotations/Post":57,"./web/annotations/Put":58,"./web/annotations/RequestBody":59,"./web/annotations/RequestHeader":60,"./web/annotations/RequestParam":61}],48:[function(require,module,exports){
+"use strict";
+/**
+ * WebApplication 类
+ *
+ * @author zhangbaili
+ * @since 1.2.2-beta
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const ApplicationContext_1 = __importDefault(require("../core/ApplicationContext"));
+class WebApplication {
+    run() {
+        ApplicationContext_1.default.getInstance().getViewBeanRegisty().mountAll();
+    }
+}
+exports.default = WebApplication;
+
+},{"../core/ApplicationContext":37}],49:[function(require,module,exports){
 "use strict";
 /**
  * View 注解
@@ -2690,36 +2827,20 @@ exports.default = ApplicationContext_1.default;
  * @author zhangbaili
  * @since 1.1.3-beta
 */
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-function View(name) {
-    return (ctor) => __awaiter(this, void 0, void 0, function* () {
-        if (document) {
-            const element = document.getElementById(name);
-            if (!element) {
-                throw new Error(`Error: Element with id '${name}' is not found !`);
-            }
-            const html = new ctor().render();
-            if (html instanceof Promise) {
-                element.innerHTML = yield html;
-            }
-            else {
-                element.innerHTML = html;
-            }
-        }
-    });
+const __1 = __importDefault(require("../.."));
+function View(id) {
+    return (ctor) => {
+        const viewBeanFactory = __1.default.getInstance().getViewBeanRegisty();
+        viewBeanFactory.registerView(id, ctor);
+    };
 }
 exports.default = View;
 
-},{}],47:[function(require,module,exports){
+},{"../..":47}],50:[function(require,module,exports){
 "use strict";
 /**
  * HttpAnnotationGenerator 类
@@ -2772,7 +2893,7 @@ class HttpAnnotationGenerator {
 }
 exports.default = HttpAnnotationGenerator;
 
-},{"../core/ApplicationContext":36,"../core/MethodDefinition":40,"./HttpBeanMethodDefinition":48}],48:[function(require,module,exports){
+},{"../core/ApplicationContext":37,"../core/MethodDefinition":41,"./HttpBeanMethodDefinition":51}],51:[function(require,module,exports){
 "use strict";
 /**
  * HttpBeanMethodDefinition
@@ -2881,7 +3002,7 @@ class HttpBeanMethodDefinition extends MethodDefinition_1.default {
 }
 exports.default = HttpBeanMethodDefinition;
 
-},{"../core/ApplicationContext":36,"../core/MethodDefinition":40,"./PathResolver":49}],49:[function(require,module,exports){
+},{"../core/ApplicationContext":37,"../core/MethodDefinition":41,"./PathResolver":52}],52:[function(require,module,exports){
 "use strict";
 /**
  * PathResolver 类
@@ -2918,7 +3039,7 @@ class PathResolver {
 }
 exports.default = PathResolver;
 
-},{}],50:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 "use strict";
 /**
  * Delete 注解
@@ -2938,7 +3059,7 @@ function Delete(path) {
 }
 exports.default = Delete;
 
-},{"../HttpAnnotationGenerator":47}],51:[function(require,module,exports){
+},{"../HttpAnnotationGenerator":50}],54:[function(require,module,exports){
 "use strict";
 /**
  * Get 注解
@@ -2958,7 +3079,7 @@ function Get(path) {
 }
 exports.default = Get;
 
-},{"../HttpAnnotationGenerator":47}],52:[function(require,module,exports){
+},{"../HttpAnnotationGenerator":50}],55:[function(require,module,exports){
 "use strict";
 /**
  * HttpRequest 注解
@@ -2984,7 +3105,7 @@ function HttpRequest() {
 }
 exports.default = HttpRequest;
 
-},{"../../core/ApplicationContext":36}],53:[function(require,module,exports){
+},{"../../core/ApplicationContext":37}],56:[function(require,module,exports){
 "use strict";
 /**
  * PathVariable 注解
@@ -3004,7 +3125,7 @@ function PathVariable(name) {
 }
 exports.default = PathVariable;
 
-},{"../../core/ParameterGenerator":41}],54:[function(require,module,exports){
+},{"../../core/ParameterGenerator":42}],57:[function(require,module,exports){
 "use strict";
 /**
  * Post 注解
@@ -3024,7 +3145,7 @@ function Post(path) {
 }
 exports.default = Post;
 
-},{"../HttpAnnotationGenerator":47}],55:[function(require,module,exports){
+},{"../HttpAnnotationGenerator":50}],58:[function(require,module,exports){
 "use strict";
 /**
  * Put 注解
@@ -3044,7 +3165,7 @@ function Put(path) {
 }
 exports.default = Put;
 
-},{"../HttpAnnotationGenerator":47}],56:[function(require,module,exports){
+},{"../HttpAnnotationGenerator":50}],59:[function(require,module,exports){
 "use strict";
 /**
  * RequestBody 注解
@@ -3064,7 +3185,7 @@ function RequestBody() {
 }
 exports.default = RequestBody;
 
-},{"../../core/ParameterGenerator":41}],57:[function(require,module,exports){
+},{"../../core/ParameterGenerator":42}],60:[function(require,module,exports){
 "use strict";
 /**
  * RequestHeader 注解
@@ -3084,7 +3205,7 @@ function RequestHeader(name) {
 }
 exports.default = RequestHeader;
 
-},{"../../core/ParameterGenerator":41}],58:[function(require,module,exports){
+},{"../../core/ParameterGenerator":42}],61:[function(require,module,exports){
 "use strict";
 /**
  * RequestParam 注解
@@ -3104,4 +3225,4 @@ function RequestParam(name) {
 }
 exports.default = RequestParam;
 
-},{"../../core/ParameterGenerator":41}]},{},[3]);
+},{"../../core/ParameterGenerator":42}]},{},[3]);
