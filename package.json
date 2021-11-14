@@ -1,0 +1,23 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": {
+    "name": "zhangbaili",
+    "email": "1456938262@qq.com"
+  },
+  "scripts": {
+    "serve": "node server/index.js",
+    "update": "yarn remove ioc4ts && yarn add ioc4ts",
+    "compile": "tsc --watch",
+    "build": "browserify -e browser/build/index.js -o server/static/app.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@koa/router": "^10.1.1",
+    "axios": "^0.24.0",
+    "ioc4ts": "^1.2.1-beta",
+    "koa": "^2.13.4",
+    "koa-static": "^5.0.0"
+  }
+}
