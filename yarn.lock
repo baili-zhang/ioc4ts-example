@@ -176,10 +176,10 @@ inherits@2.0.4:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-ioc4ts@^1.2.2-beta:
-  version "1.2.2-beta"
-  resolved "https://registry.yarnpkg.com/ioc4ts/-/ioc4ts-1.2.2-beta.tgz#431da5abcefe1342f057290bc8067c4bcff80e33"
-  integrity sha512-VgmzFsBOpbcrjbMzgpwK5orY8mrGgOjAqf7YyRtz5VvEmwUbm0pmztdBT1qVIK5pFv2P3QYC2qjhqeX64G7UYA==
+ioc4ts@^1.2.5-beta:
+  version "1.2.5-beta"
+  resolved "https://registry.yarnpkg.com/ioc4ts/-/ioc4ts-1.2.5-beta.tgz#87cfa35d2d77d14eb218277874cc7eb67af7577a"
+  integrity sha512-q/H+G0FB6TE3spNI5WetCGye/jk11T9pVdDerSmNEeIJcKmgARAKkh2+jAjusb+7+ANQVMw92p06BPBYf6RhLA==
 
 is-generator-function@^1.0.7:
   version "1.0.10"

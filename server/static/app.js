@@ -360,13 +360,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const ioc4ts_1 = __importStar(require("ioc4ts"));
 let HomeTitle = class HomeTitle {
+    constructor() {
+        this.intro = "Hello, my name is ioc4ts！";
+    }
     render() {
         return __awaiter(this, void 0, void 0, function* () {
             const application = ioc4ts_1.default.getInstance();
             const beanFactory = application.getBeanFactory();
             const UserMapper = beanFactory.getBeanClass("UserMapper");
-            const user = yield UserMapper.getUser();
-            return `<h1>${user.hello()}</h1>`;
+            this.user = (yield UserMapper.getUser());
+            return `<h1>{this.intro}</h1>
+                <div>{this.user.hello()}</div>`;
         });
     }
 };
@@ -2325,15 +2329,6 @@ class BeanDefinition {
         this.methods = new Map();
         this.ctor = ctor;
     }
-    getCtor() {
-        return this.ctor;
-    }
-    getProperties() {
-        return this.properties;
-    }
-    getMethods() {
-        return this.methods;
-    }
     appendProperty(name, propertyKey) {
         if (this.properties.has(name)) {
             throw new Error(`Properties name: "${name}" has already existed !`);
@@ -2360,6 +2355,15 @@ class BeanDefinition {
         if (Log_1.default.isLog()) {
             Log_1.default.info('Bean', `Replace Bean "${this.ctor.name}" method "${name}", final method info: [${methodDefinition}].`);
         }
+    }
+    getCtor() {
+        return this.ctor;
+    }
+    getProperties() {
+        return this.properties;
+    }
+    getMethods() {
+        return this.methods;
     }
 }
 exports.default = BeanDefinition;
@@ -2615,6 +2619,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BeanFactory_1 = __importDefault(require("./BeanFactory"));
 const Log_1 = __importDefault(require("./utils/Log"));
+const JSX_1 = __importDefault(require("../view/jsx/JSX"));
 class ViewBeanRegistry extends BeanFactory_1.default {
     constructor() {
         super();
@@ -2627,7 +2632,7 @@ class ViewBeanRegistry extends BeanFactory_1.default {
         const beanDefinition = this.loadBeanDefinition(ctor);
         this.viewBeanDefinitions.set(id, beanDefinition);
         if (Log_1.default.isLog()) {
-            Log_1.default.info("View", `Register view with id "${id}".`);
+            Log_1.default.info('View', `Register view with id "${id}".`);
         }
     }
     getView(id) {
@@ -2642,22 +2647,21 @@ class ViewBeanRegistry extends BeanFactory_1.default {
             for (const view of this.viewBeanDefinitions) {
                 const id = view[0];
                 const ctor = view[1].getCtor();
-                if (document) {
+                const viewInstance = new ctor();
+                if (!viewInstance.render || !(viewInstance.render instanceof Function)) {
+                    throw new Error(`Error: View instance with id "${id}" has no method named "render".`);
+                }
+                const jsx = yield viewInstance.render();
+                const html = new JSX_1.default(jsx).parse().map(node => node.render(viewInstance)).join("");
+                if (typeof document !== 'undefined') {
                     const element = document.getElementById(id);
                     if (!element) {
-                        throw new Error(`Error: Element with id '${id}' is not found !`);
+                        throw new Error(`Error: Element with id "${id}" is not found !`);
                     }
-                    const viewInstance = new ctor();
-                    if (!viewInstance.render || !(viewInstance.render instanceof Function)) {
-                        throw new Error(`Error: View instance with id "${id}" has no method named "render".`);
-                    }
-                    const html = viewInstance.render();
-                    if (html instanceof Promise) {
-                        element.innerHTML = yield html;
-                    }
-                    else {
-                        element.innerHTML = html;
-                    }
+                    element.innerHTML = html;
+                }
+                else {
+                    console.log(html);
                 }
             }
         });
@@ -2665,7 +2669,7 @@ class ViewBeanRegistry extends BeanFactory_1.default {
 }
 exports.default = ViewBeanRegistry;
 
-},{"./BeanFactory":39,"./utils/Log":46}],44:[function(require,module,exports){
+},{"../view/jsx/JSX":52,"./BeanFactory":39,"./utils/Log":46}],44:[function(require,module,exports){
 "use strict";
 /**
  * Property 注解
@@ -2799,7 +2803,7 @@ const WebApplication_1 = __importDefault(require("./view/WebApplication"));
 exports.WebApplication = WebApplication_1.default;
 exports.default = ApplicationContext_1.default;
 
-},{"./core/ApplicationContext":37,"./core/annotations/Property":44,"./core/annotations/ReturnType":45,"./view/WebApplication":48,"./view/annotations/View":49,"./web/annotations/Delete":53,"./web/annotations/Get":54,"./web/annotations/HttpRequest":55,"./web/annotations/PathVariable":56,"./web/annotations/Post":57,"./web/annotations/Put":58,"./web/annotations/RequestBody":59,"./web/annotations/RequestHeader":60,"./web/annotations/RequestParam":61}],48:[function(require,module,exports){
+},{"./core/ApplicationContext":37,"./core/annotations/Property":44,"./core/annotations/ReturnType":45,"./view/WebApplication":48,"./view/annotations/View":49,"./web/annotations/Delete":57,"./web/annotations/Get":58,"./web/annotations/HttpRequest":59,"./web/annotations/PathVariable":60,"./web/annotations/Post":61,"./web/annotations/Put":62,"./web/annotations/RequestBody":63,"./web/annotations/RequestHeader":64,"./web/annotations/RequestParam":65}],48:[function(require,module,exports){
 "use strict";
 /**
  * WebApplication 类
@@ -2833,7 +2837,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = __importDefault(require("../.."));
 function View(id) {
+    // TODO: 注册一个 View，解析模板，（注册 id 和 template）
+    // TODO: 需要定义一个 TemplateDefinition 类 
     return (ctor) => {
+        // TODO: 将 ctor 添加进 ViewDefinition
         const viewBeanFactory = __1.default.getInstance().getViewBeanRegisty();
         viewBeanFactory.registerView(id, ctor);
     };
@@ -2841,6 +2848,350 @@ function View(id) {
 exports.default = View;
 
 },{"../..":47}],50:[function(require,module,exports){
+"use strict";
+/**
+ * Attribute 类
+ *
+ * @author zhangbaili
+ * @since 1.2.3-beta
+*/
+Object.defineProperty(exports, "__esModule", { value: true });
+class Attribute {
+    constructor(name, value) {
+        this.name = name;
+        this.value = value;
+    }
+    render(scope) {
+        return ` ${this.name}="${this.value.render(scope)}"`;
+    }
+}
+exports.default = Attribute;
+
+},{}],51:[function(require,module,exports){
+"use strict";
+/**
+ * DomNode 类
+ *
+ * @author zhangbaili
+ * @since 1.2.3-beta
+*/
+Object.defineProperty(exports, "__esModule", { value: true });
+class DomNode {
+    constructor() {
+        this.name = undefined;
+        this.attributes = [];
+        this.children = [];
+        this.leftTextNodes = [];
+        this.rightTextNodes = [];
+    }
+    renderTextNodes(textNodes, scope) {
+        let text = '';
+        for (const textNode of textNodes) {
+            text += textNode.render(scope);
+        }
+        return text;
+    }
+    render(scope) {
+        let leftSection = '', rightSection = '', attributes = '';
+        for (const attribute of this.attributes) {
+            attributes += attribute.render(scope);
+        }
+        if (this.name) {
+            leftSection = `${this.renderTextNodes(this.leftTextNodes, scope)}<${this.name}${attributes}>`;
+            rightSection = `</${this.name}>${this.renderTextNodes(this.rightTextNodes, scope)}`;
+        }
+        else {
+            leftSection += this.renderTextNodes(this.leftTextNodes, scope);
+            rightSection += this.renderTextNodes(this.rightTextNodes, scope);
+        }
+        if (this.children.length === 0) {
+            return leftSection + rightSection;
+        }
+        let html = leftSection;
+        for (const child of this.children) {
+            html += child.render(scope);
+        }
+        return html + rightSection;
+    }
+    hasName() {
+        return this.name !== undefined;
+    }
+    setName(name) {
+        if (this.name === undefined) {
+            this.name = name;
+        }
+    }
+    confirmName(name) {
+        return this.name === name;
+    }
+    appendChildren(children) {
+        this.children = this.children.concat(children);
+    }
+    setLeftTextNodes(textNodes) {
+        this.leftTextNodes = textNodes;
+    }
+    setRightTextNodes(textNodes) {
+        this.rightTextNodes = textNodes;
+    }
+    getChildren() {
+        return this.children;
+    }
+    setAttributes(attributes) {
+        this.attributes = attributes;
+    }
+}
+exports.default = DomNode;
+
+},{}],52:[function(require,module,exports){
+"use strict";
+/**
+ * JSX 类
+ *
+ * @author zhangbaili
+ * @since 1.2.3-beta
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Attribute_1 = __importDefault(require("./Attribute"));
+const DomNode_1 = __importDefault(require("./DomNode"));
+const TextNode_1 = __importDefault(require("./TextNode"));
+class JSX {
+    constructor(jsx) {
+        this.jsx = jsx;
+        this.currentPosition = 0;
+    }
+    parse() {
+        const dom = [];
+        while (this.hasRemaining()) {
+            console.log('parse JSX');
+            const node = new DomNode_1.default();
+            if (!this.hasRemaining()) {
+                return dom;
+            }
+            this.parseSpace();
+            node.setLeftTextNodes(this.parseTextNode());
+            if (!this.hasRemaining()) {
+                dom.push(node);
+                return dom;
+            }
+            if (this.currentChar() !== '<') {
+                throw SyntaxError('Begin tag is not begin with "<".');
+            }
+            if (this.jsx[this.currentPosition + 1] === '/') {
+                dom.push(node);
+                return dom;
+            }
+            const { beginTagName, attributes } = this.parseBeginTag();
+            node.setName(beginTagName);
+            node.setAttributes(attributes);
+            console.log('parse Child JSX');
+            node.appendChildren(this.parse());
+            if (node.hasName()) {
+                const endTagName = this.parseEndTag();
+                if (!node.confirmName(endTagName)) {
+                    throw new SyntaxError(`End tag name "${endTagName}" cannot match begin tag name "${beginTagName}"`);
+                }
+                node.setRightTextNodes(this.parseTextNode());
+            }
+            dom.push(node);
+        }
+        return dom;
+    }
+    throwError(section) {
+        throw new SyntaxError(`JSX syntax error when parse "${section}": ${this.jsx.substring(this.currentPosition, this.currentPosition + 20)}`);
+    }
+    parseBeginTag() {
+        console.log('parse BeginTag');
+        if (!this.hasRemaining()) {
+            return { beginTagName: undefined, attributes: [] };
+        }
+        if (this.currentChar() !== '<') {
+            this.throwError('BeginTag');
+        }
+        this.next();
+        const beginTagName = this.parseTagName();
+        const attributes = [];
+        while (/\s/.test(this.currentChar())) {
+            if (this.currentChar() === '>') {
+                break;
+            }
+            this.parseSpace();
+            attributes.push(this.parseAttribute());
+        }
+        if (this.currentChar() !== '>') {
+            this.throwError('BeginTag');
+        }
+        this.next();
+        return { beginTagName, attributes };
+    }
+    parseTagName() {
+        console.log('parse TagName');
+        let tagName = '';
+        while (this.hasRemaining()) {
+            if (!/[a-z|A-Z|0-9|_|-]/.test(this.currentChar())) {
+                if (/\s/.test(this.currentChar()) ||
+                    this.currentChar() === '>') {
+                    break;
+                }
+                else {
+                    this.throwError('TagName');
+                }
+            }
+            tagName += this.currentChar();
+            this.next();
+        }
+        return tagName;
+    }
+    parseSpace() {
+        console.log('parse Space');
+        while (this.hasRemaining()) {
+            if (!/\s/.test(this.currentChar())) {
+                break;
+            }
+            this.next();
+        }
+    }
+    parseTextNode() {
+        console.log('parse TextNode');
+        const textNodes = [];
+        let text = '';
+        while (this.hasRemaining()) {
+            if (this.currentChar() === '<') {
+                textNodes.push(new TextNode_1.default('TEXT', text));
+                break;
+            }
+            if (this.currentChar() === '{') {
+                textNodes.push(new TextNode_1.default('TEXT', text));
+                text = '';
+                textNodes.push(this.parseJsClause());
+                continue;
+            }
+            text += this.currentChar();
+            this.next();
+        }
+        return textNodes;
+    }
+    parseEndTag() {
+        console.log('parse EndTag');
+        if (!this.hasRemaining()) {
+            return;
+        }
+        this.next();
+        if (!this.hasRemaining()) {
+            this.throwError('EndTag');
+        }
+        if (this.currentChar() === '/') {
+            this.next();
+        }
+        else {
+            this.throwError('EndTag');
+        }
+        const tagName = this.parseTagName();
+        if (this.hasRemaining() && this.currentChar() === '>') {
+            this.next();
+        }
+        return tagName;
+    }
+    parseAttribute() {
+        console.log('parse Attribute');
+        let attributeName = '';
+        while (this.hasRemaining()) {
+            if (this.currentChar() === '=') {
+                break;
+            }
+            attributeName += this.currentChar();
+            this.next();
+        }
+        this.next();
+        const attributeValue = this.parseAttributeValue();
+        return new Attribute_1.default(attributeName, attributeValue);
+    }
+    parseAttributeValue() {
+        console.log('parse AttributeValue');
+        if (this.currentChar() === '{') {
+            return this.parseJsClause();
+        }
+        if (/"/.test(this.currentChar())) {
+            this.next();
+            let attributeValue = '';
+            while (this.hasRemaining()) {
+                if (/"/.test(this.currentChar())) {
+                    this.next();
+                    break;
+                }
+                attributeValue += this.currentChar();
+                this.next();
+            }
+            return new TextNode_1.default('TEXT', attributeValue);
+        }
+        throw new SyntaxError('AttributeValue format error !');
+    }
+    parseJsClause() {
+        console.log('parse JsClause');
+        if (this.currentChar() !== '{') {
+            this.throwError('JsClause');
+        }
+        this.next();
+        let jsClause = '';
+        while (this.hasRemaining()) {
+            if (this.currentChar() === '}') {
+                break;
+            }
+            jsClause += this.currentChar();
+            this.next();
+        }
+        this.next();
+        return new TextNode_1.default('JSCLAUSE', jsClause);
+    }
+    currentChar() {
+        return this.jsx[this.currentPosition];
+    }
+    hasRemaining() {
+        return this.currentPosition < this.jsx.length;
+    }
+    next() {
+        this.currentPosition++;
+    }
+}
+exports.default = JSX;
+
+},{"./Attribute":50,"./DomNode":51,"./TextNode":53}],53:[function(require,module,exports){
+"use strict";
+/**
+ * TextNode 类
+ *
+ * @author zhangbaili
+ * @since 1.2.3-beta
+*/
+Object.defineProperty(exports, "__esModule", { value: true });
+class TextNode {
+    constructor(type, value) {
+        this.type = type;
+        this.value = value;
+    }
+    renderJsClause(value) {
+        return eval(value);
+    }
+    render(scope) {
+        if (this.type === 'TEXT') {
+            return this.value;
+        }
+        return this.renderJsClause.call(scope, this.value);
+    }
+    toJson() {
+        return {
+            value: this.value
+        };
+    }
+    getType() {
+        return this.type;
+    }
+}
+exports.default = TextNode;
+
+},{}],54:[function(require,module,exports){
 "use strict";
 /**
  * HttpAnnotationGenerator 类
@@ -2893,7 +3244,7 @@ class HttpAnnotationGenerator {
 }
 exports.default = HttpAnnotationGenerator;
 
-},{"../core/ApplicationContext":37,"../core/MethodDefinition":41,"./HttpBeanMethodDefinition":51}],51:[function(require,module,exports){
+},{"../core/ApplicationContext":37,"../core/MethodDefinition":41,"./HttpBeanMethodDefinition":55}],55:[function(require,module,exports){
 "use strict";
 /**
  * HttpBeanMethodDefinition
@@ -3002,7 +3353,7 @@ class HttpBeanMethodDefinition extends MethodDefinition_1.default {
 }
 exports.default = HttpBeanMethodDefinition;
 
-},{"../core/ApplicationContext":37,"../core/MethodDefinition":41,"./PathResolver":52}],52:[function(require,module,exports){
+},{"../core/ApplicationContext":37,"../core/MethodDefinition":41,"./PathResolver":56}],56:[function(require,module,exports){
 "use strict";
 /**
  * PathResolver 类
@@ -3039,7 +3390,7 @@ class PathResolver {
 }
 exports.default = PathResolver;
 
-},{}],53:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 "use strict";
 /**
  * Delete 注解
@@ -3059,7 +3410,7 @@ function Delete(path) {
 }
 exports.default = Delete;
 
-},{"../HttpAnnotationGenerator":50}],54:[function(require,module,exports){
+},{"../HttpAnnotationGenerator":54}],58:[function(require,module,exports){
 "use strict";
 /**
  * Get 注解
@@ -3079,7 +3430,7 @@ function Get(path) {
 }
 exports.default = Get;
 
-},{"../HttpAnnotationGenerator":50}],55:[function(require,module,exports){
+},{"../HttpAnnotationGenerator":54}],59:[function(require,module,exports){
 "use strict";
 /**
  * HttpRequest 注解
@@ -3105,7 +3456,7 @@ function HttpRequest() {
 }
 exports.default = HttpRequest;
 
-},{"../../core/ApplicationContext":37}],56:[function(require,module,exports){
+},{"../../core/ApplicationContext":37}],60:[function(require,module,exports){
 "use strict";
 /**
  * PathVariable 注解
@@ -3125,7 +3476,7 @@ function PathVariable(name) {
 }
 exports.default = PathVariable;
 
-},{"../../core/ParameterGenerator":42}],57:[function(require,module,exports){
+},{"../../core/ParameterGenerator":42}],61:[function(require,module,exports){
 "use strict";
 /**
  * Post 注解
@@ -3145,7 +3496,7 @@ function Post(path) {
 }
 exports.default = Post;
 
-},{"../HttpAnnotationGenerator":50}],58:[function(require,module,exports){
+},{"../HttpAnnotationGenerator":54}],62:[function(require,module,exports){
 "use strict";
 /**
  * Put 注解
@@ -3165,7 +3516,7 @@ function Put(path) {
 }
 exports.default = Put;
 
-},{"../HttpAnnotationGenerator":50}],59:[function(require,module,exports){
+},{"../HttpAnnotationGenerator":54}],63:[function(require,module,exports){
 "use strict";
 /**
  * RequestBody 注解
@@ -3185,7 +3536,7 @@ function RequestBody() {
 }
 exports.default = RequestBody;
 
-},{"../../core/ParameterGenerator":42}],60:[function(require,module,exports){
+},{"../../core/ParameterGenerator":42}],64:[function(require,module,exports){
 "use strict";
 /**
  * RequestHeader 注解
@@ -3205,7 +3556,7 @@ function RequestHeader(name) {
 }
 exports.default = RequestHeader;
 
-},{"../../core/ParameterGenerator":42}],61:[function(require,module,exports){
+},{"../../core/ParameterGenerator":42}],65:[function(require,module,exports){
 "use strict";
 /**
  * RequestParam 注解

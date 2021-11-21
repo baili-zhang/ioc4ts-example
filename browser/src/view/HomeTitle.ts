@@ -3,14 +3,19 @@ import User from "../model/User";
 
 @View("title")
 class HomeTitle {
+
+    private intro = "Hello, my name is ioc4ts！"
+    private user?: User
+
     async render() {
         const application = ApplicationContext.getInstance()
         const beanFactory = application.getBeanFactory()
 
         const UserMapper = beanFactory.getBeanClass("UserMapper")
-        const user = await UserMapper.getUser() as User
+        this.user = await UserMapper.getUser() as User
 
-        return `<h1>${user.hello()}</h1>`
+        return `<h1>{this.intro}</h1>
+                <div>{this.user.hello()}</div>`
     }
 }
 
